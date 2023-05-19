@@ -18,6 +18,8 @@ class CreateShortLinksTable extends Migration
             $table->string('code');
             $table->string('original_url')->nullable();
             $table->string('traffic')->default(0);
+            $table->string('ip_address')->default(0);
+            $table->string('timestamp')->default(0);
             $table->timestamps();
         });
     }

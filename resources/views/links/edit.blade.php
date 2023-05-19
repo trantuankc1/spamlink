@@ -17,12 +17,12 @@
         @method('PUT')
         <input type="hidden" name="user_ip">
         <label class="col-form-label">link target</label>
-        @error('spam_link')
+        @error('original_url')
         <div class="alert alert-danger" role="alert">
             nhập data
         </div>
         @enderror
-        <input class="form form-control" type="text" name="original_url" placeholder="nhập link target" value="">
+        <input class="form form-control" type="text" name="original_url" placeholder="nhập link target" value="{{ $link->original_url }}">
         <button type="submit" class="btn btn-success mt-4">Update</button>
     </form>
 </div>

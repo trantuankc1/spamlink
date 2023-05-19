@@ -2,8 +2,10 @@
 
 use App\Models\ShortLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+
 
 
 /*
@@ -25,6 +27,26 @@ Route::prefix('links')->middleware('checklogin')->group(function (){
     Route::delete('/delete{id}', [\App\Http\Controllers\LinkController::class, 'delete'])->name('delete');
     Route::get('edit/{id}', [\App\Http\Controllers\LinkController::class, 'edit'])->name('edit');
     Route::put('/update/{id}', [\App\Http\Controllers\LinkController::class, 'update'])->name('update');
+    Route::get('/thong-ke', [\App\Http\Controllers\ThongKeController::class, 'index'])->name('thong-ke');
+
+
+    Route::get('/record-click/{code}', function (Request $request, $code) {
+        $ipAddress = $request->ip();
+        $timestamp = now();
+
+        DB::table('short_links')->update([
+            'ip_address' => $ipAddress,
+            'timestamp' => $timestamp
+        ]);
+
+        return redirect()->route('code', ['code' => $code]);
+    })->name('record-click');
+
+//    Route::get('/get-ip', function () {
+//        $ipAddress = $_SERVER['REMOTE_ADDR'];
+//
+//        return response()->json(['ipAddress' => $ipAddress]);
+//    });
 
     Route::post('/shorten-url', function (Request $request) {
         $originalUrl = $request->input('url');

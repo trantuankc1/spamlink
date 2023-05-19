@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\updatelinkRequest;
 use App\Models\ShortLink;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,7 @@ class LinkController extends Controller
         return view('links.edit', compact('link'));
     }
 
-    public function update(Request $request, $id)
+    public function update(updatelinkRequest $request, $id)
     {
         $user = ShortLink::find($id);
         $user->original_url = $request->input('original_url');

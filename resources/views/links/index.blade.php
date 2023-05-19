@@ -10,6 +10,7 @@
     <title>Document</title>
 </head>
 <body>
+<a href="{{ route('thong-ke') }}" class="btn btn-success mt-2 mb-3">thống kê</a>
 <div class="container-fluid">
     <table class="table table-bordered">
         <thead>
@@ -25,7 +26,11 @@
         <tbody>
         @foreach ($links as $link)
             <tr>
-                <td id="myInput"> <a id="myInput" class="btn btn-info" href="{{route('code', $link->code) }}" target="_blank"> {{ $link->code }}</a></td>
+                <td>
+                    <a class="btn btn-info" href="{{ route('record-click', ['code' => $link->code]) }}" target="_blank">{{ $link->code }}</a>
+
+                    <button class="btn btn-primary" onclick="copyLink('{{ route('code', $link->code) }}')">Copy</button>
+                </td>
                 <td>{{ $link->original_url }}</td>
                 <td>{{ $link->traffic }}</td>
                 <td>{{ $link->created_at }}</td>
@@ -34,11 +39,11 @@
                     <form action="{{ route('delete', $link->id) }}" method="post">
                         @csrf
                         @method('DELETE')
-                        <button  onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
+                        <button onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
             </tr>
-{{--            <a class="btn btn-info" href="{{route('code', $link->code) }}" target="_blank"> {{ $link->code }}</a>--}}
+            {{--            <a class="btn btn-info" href="{{route('code', $link->code) }}" target="_blank"> {{ $link->code }}</a>--}}
         @endforeach
         {{ $links->links('vendor.pagination.bootstrap-4') }}
         </tbody>
@@ -50,14 +55,44 @@
 </div>
 <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 <script>
-    let text = document.getElementById('myInput').innerHTML;
-    const copyContent = async () => {
-        try {
-            await navigator.clipboard.writeText(text);
-            console.log('Content copied to clipboard');
-        } catch (err) {
-            console.error('Failed to copy: ', err);
+    function copyLink(link) {
+        const textarea = document.createElement('textarea');
+        textarea.value = link;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
+    function recordClick(code) {
+        const xhr = new XMLHttpRequest();
+        console.log(xhr)
+        xhr.open('POST', '/record-click', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        const ipAddress = getIpAddress();
+        const timestamp = new Date().toISOString();
+        const data = JSON.stringify({ code: code, ipAddress: ipAddress, timestamp: timestamp });
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                console.log('Click recorded successfully.');
+            }
+        };
+
+        xhr.send(data);
+    }
+
+    // Hàm lấy địa chỉ IP
+    function getIpAddress() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/get-ip', false);
+        xhr.send();
+
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            return response.ipAddress;
         }
+
+        return '';
     }
 </script>
 </body>

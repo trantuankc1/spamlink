@@ -16,7 +16,6 @@
         <form action="{{ route('create_code') }}" method="POST">
             @csrf
             <label for="url">Link Target:</label>
-{{--            <input class="form form-control" type="text" name="url" id="url">--}}
             <input class="form form-control" type="text" name="url" id="url">
             <button class="btn btn-success mt-2" type="submit">Thêm mới</button>
         </form>
