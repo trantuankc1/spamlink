@@ -11,22 +11,19 @@
 </head>
 <body>
 <div class="container">
-    <h2 class="text-capitalize">create link spam</h2>
-    <form action="{{ route('process_create') }}" method="post" class="form form-control">
+    <h2 class="text-capitalize">update link target</h2>
+    <form action="{{ route('update', $link->id) }}" method="post" class="form form-control">
         @csrf
-        @method('POST')
-        <label class="col-form-label">link spam</label>
+        @method('PUT')
+        <input type="hidden" name="user_ip">
+        <label class="col-form-label">link target</label>
         @error('spam_link')
         <div class="alert alert-danger" role="alert">
             nhập data
         </div>
         @enderror
-       <div>
-           <input class="form form-control" type="text" name="spam_link" placeholder="nhập link spam"
-                  value="{{ old('spam_link') }}">
-       </div>
-
-        <button type="submit" class="btn btn-success mt-4">Create</button>
+        <input class="form form-control" type="text" name="original_url" placeholder="nhập link target" value="">
+        <button type="submit" class="btn btn-success mt-4">Update</button>
     </form>
 </div>
 

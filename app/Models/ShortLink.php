@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserTraffic extends Model
+class ShortLink extends Model
 {
     use HasFactory;
-    protected $table = 'user_traffics';
+
+    protected $table = 'short_links';
     protected $fillable = [
-        'spam_link',
-        'target_link',
-        'click_count'
+        'code',
+        'original_url'
     ];
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTraffics extends Migration
+class CreateShortLinksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateUserTraffics extends Migration
      */
     public function up()
     {
-        Schema::create('user_traffics', function (Blueprint $table) {
+        Schema::create('short_links', function (Blueprint $table) {
             $table->id();
-            $table->string('spam_link')->nullable();
-            $table->string('target_link')->default('https://');
-            $table->string('click_count')->default(0);
+            $table->string('code');
+            $table->string('original_url')->nullable();
+            $table->string('traffic')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateUserTraffics extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_traffics');
+        Schema::dropIfExists('short_links');
     }
 }
